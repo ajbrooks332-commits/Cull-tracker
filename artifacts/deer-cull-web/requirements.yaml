@@ -1,0 +1,15 @@
+packages:
+  "leaflet": "Interactive maps"
+  "react-leaflet": "React wrapper for Leaflet"
+  "@types/leaflet": "Types for leaflet"
+  "jspdf": "PDF generation"
+  "jspdf-autotable": "Table generation for PDF"
+  "date-fns": "Date formatting"
+  "clsx": "Class merging utility"
+  "tailwind-merge": "Class merging utility"
+  "zod": "Schema validation"
+images: []
+notes:
+  - "Using Esri World Imagery for satellite map tiles (no API key required)."
+  - "API server is assumed to be running on /api, proxying handles routing."
+  - "App is optimized for mobile-first usage in the field."

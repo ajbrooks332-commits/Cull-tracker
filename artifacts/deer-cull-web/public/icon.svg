@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Forest green rounded-square background -->
+  <rect width="512" height="512" rx="96" fill="#21503A"/>
+
+  <!-- ── Antlers (white stroked paths) ──────────────────────────────── -->
+
+  <!-- Left main beam: rises from skull, curves outward then up -->
+  <path d="M232,268 C228,238 218,200 208,162 C200,132 192,106 184,78"
+        stroke="white" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Left brow tine (points forward-up off the lower beam) -->
+  <path d="M222,244 C210,228 196,216 178,210"
+        stroke="white" stroke-width="19" stroke-linecap="round" fill="none"/>
+  <!-- Left bez tine -->
+  <path d="M210,196 C198,180 184,168 168,160"
+        stroke="white" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <!-- Left crown: two tines splitting at top of beam -->
+  <path d="M188,118 C176,100 164,84 156,66"
+        stroke="white" stroke-width="15" stroke-linecap="round" fill="none"/>
+  <path d="M188,118 C190,100 196,84 204,68"
+        stroke="white" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- Right main beam (mirror of left) -->
+  <path d="M280,268 C284,238 294,200 304,162 C312,132 320,106 328,78"
+        stroke="white" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Right brow tine -->
+  <path d="M290,244 C302,228 316,216 334,210"
+        stroke="white" stroke-width="19" stroke-linecap="round" fill="none"/>
+  <!-- Right bez tine -->
+  <path d="M302,196 C314,180 328,168 344,160"
+        stroke="white" stroke-width="16" stroke-linecap="round" fill="none"/>
+  <!-- Right crown -->
+  <path d="M324,118 C336,100 348,84 356,66"
+        stroke="white" stroke-width="15" stroke-linecap="round" fill="none"/>
+  <path d="M324,118 C322,100 316,84 308,68"
+        stroke="white" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+  <!-- ── Head ────────────────────────────────────────────────────────── -->
+
+  <!-- Ears -->
+  <ellipse cx="178" cy="284" rx="26" ry="36" transform="rotate(-22,178,284)" fill="white"/>
+  <ellipse cx="334" cy="284" rx="26" ry="36" transform="rotate(22,334,284)" fill="white"/>
+
+  <!-- Main head shape -->
+  <ellipse cx="256" cy="338" rx="80" ry="88" fill="white"/>
+
+  <!-- Muzzle -->
+  <ellipse cx="256" cy="396" rx="50" ry="34" fill="white"/>
+
+  <!-- Eyes (cut-outs into the green) -->
+  <circle cx="225" cy="320" r="12" fill="#21503A"/>
+  <circle cx="287" cy="320" r="12" fill="#21503A"/>
+</svg>

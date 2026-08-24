@@ -1,0 +1,427 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.2.0
+  description: Deer Culling Records API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: culls
+    description: Deer cull record operations
+  - name: stalkers
+    description: Stalker management
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  /stalkers:
+    get:
+      operationId: listStalkers
+      tags: [stalkers]
+      summary: List all stalkers
+      responses:
+        "200":
+          description: List of stalkers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Stalker"
+    post:
+      operationId: createStalker
+      tags: [stalkers]
+      summary: Create a new stalker
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateStalkerRequest"
+      responses:
+        "201":
+          description: Created stalker
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stalker"
+        "409":
+          description: Name already taken
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /stalkers/{id}:
+    put:
+      operationId: updateStalker
+      tags: [stalkers]
+      summary: Update a stalker
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateStalkerRequest"
+      responses:
+        "200":
+          description: Updated stalker
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stalker"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteStalker
+      tags: [stalkers]
+      summary: Delete a stalker
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /stalkers/login:
+    post:
+      operationId: stalkerLogin
+      tags: [stalkers]
+      summary: Stalker PIN login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Logged in stalker
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stalker"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /culls:
+    get:
+      operationId: listCulls
+      tags: [culls]
+      summary: List all cull records
+      parameters:
+        - name: stalkerId
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: season
+          in: query
+          required: false
+          description: "Cull-season start year (May–April), e.g. 2026 for 2026/27"
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of cull records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CullRecord"
+    post:
+      operationId: createCull
+      tags: [culls]
+      summary: Create a new cull record
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCullRequest"
+      responses:
+        "201":
+          description: Created cull record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CullRecord"
+
+  /culls/{id}:
+    get:
+      operationId: getCull
+      tags: [culls]
+      summary: Get a cull record by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cull record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CullRecord"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateCull
+      tags: [culls]
+      summary: Update a cull record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCullRequest"
+      responses:
+        "200":
+          description: Updated cull record
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CullRecord"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteCull
+      tags: [culls]
+      summary: Delete a cull record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required: [status]
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+
+    Stalker:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        isAdmin:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, name, isAdmin, createdAt]
+
+    CreateStalkerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        pin:
+          type: string
+        isAdmin:
+          type: boolean
+      required: [name, pin]
+
+    UpdateStalkerRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        pin:
+          type: string
+        isAdmin:
+          type: boolean
+
+    LoginRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        pin:
+          type: string
+      required: [name, pin]
+
+    CullRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        stalkerId:
+          type: integer
+          nullable: true
+        stalkerName:
+          type: string
+          nullable: true
+        species:
+          type: string
+          enum: [red_deer, roe_deer, fallow_deer, sika_deer, muntjac, chinese_water_deer]
+        sex:
+          type: string
+          enum: [stag, hind, buck, doe]
+        weight:
+          type: number
+          nullable: true
+        condition:
+          type: string
+          enum: [excellent, good, fair, poor]
+        pregnant:
+          type: boolean
+          nullable: true
+        latitude:
+          type: number
+        longitude:
+          type: number
+        notes:
+          type: string
+          nullable: true
+        culledAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, species, sex, condition, latitude, longitude, culledAt, createdAt, updatedAt]
+
+    CreateCullRequest:
+      type: object
+      properties:
+        stalkerId:
+          type: integer
+          nullable: true
+        species:
+          type: string
+          enum: [red_deer, roe_deer, fallow_deer, sika_deer, muntjac, chinese_water_deer]
+        sex:
+          type: string
+          enum: [stag, hind, buck, doe]
+        weight:
+          type: number
+          nullable: true
+        condition:
+          type: string
+          enum: [excellent, good, fair, poor]
+        pregnant:
+          type: boolean
+          nullable: true
+        latitude:
+          type: number
+        longitude:
+          type: number
+        notes:
+          type: string
+          nullable: true
+        culledAt:
+          type: string
+          format: date-time
+      required: [species, sex, condition, latitude, longitude, culledAt]
+
+    UpdateCullRequest:
+      type: object
+      properties:
+        stalkerId:
+          type: integer
+          nullable: true
+        species:
+          type: string
+          enum: [red_deer, roe_deer, fallow_deer, sika_deer, muntjac, chinese_water_deer]
+        sex:
+          type: string
+          enum: [stag, hind, buck, doe]
+        weight:
+          type: number
+          nullable: true
+        condition:
+          type: string
+          enum: [excellent, good, fair, poor]
+        pregnant:
+          type: boolean
+          nullable: true
+        latitude:
+          type: number
+        longitude:
+          type: number
+        notes:
+          type: string
+          nullable: true
+        culledAt:
+          type: string
+          format: date-time
